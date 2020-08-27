@@ -9,7 +9,19 @@
  * server part
 */
 
-#include <winsock2.h>
+#ifdef __linux__
+	#include <arpa/inet.h>
+	#include <unistd.h>
+#elif __WIN32
+	#include <winsock2.h>
+	#pragma comment(lib, "ws2_32.lib")
+	#pragma warning(disable: 4996)
+#else
+	warning "platform not supported"
+#endif
+
+#if defined(__linux__) || defined(_WIN32)
+
 #include <iostream>
 #include <string>
 
@@ -17,16 +29,12 @@
 #include "Config.h"
 
 
-#pragma comment(lib, "ws2_32.lib")
-#pragma warning(disable: 4996)
-
-
 char buffer[100000];
 std::string command, path, key;
 
 int main() {
 	PrintGreeting();
-	
+#ifdef _WIN32	
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);
 	if (WSAStartup(DLLVersion, &wsaData) != 0) {
@@ -48,6 +56,16 @@ int main() {
 	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
 	
 	SOCKET conn = accept(sListen, (SOCKADDR*)&addr, &sizeofaddr);
+#endif
+	int sock = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(PORT);
+	addr.sin_addr.s_addr = inet_addr(IP);
+	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
+	listen(sock, 1);
+	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
+	int conn = accept(sock, (struct sockaddr *) NULL, NULL);
 	if (conn == 0) {
 		std::cout << "Error accept\n";
 		return -1;
@@ -178,3 +196,5 @@ int main() {
 	}
 	return 0;
 }
+
+#endif
