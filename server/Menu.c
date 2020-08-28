@@ -2,7 +2,7 @@
 #include "Menu.h"
 
 void PrintGreeting() {
-	printf("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
+	printf("%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s", 
 			"      * ***                                                                               \n",
 			"    *  ****                    *                                       *                  \n", 
 			"   *  *  ***                  ***                                     ***                 \n", 
@@ -18,11 +18,11 @@ void PrintGreeting() {
 			"   ***     ***   ******* **    **    ****    * * **** *   ***     *    **    * **** *     \n", 
 			"    ******* **    *****   **   *** *  *******     ****     *******     *** *    ****      \n", 
 			"      ***   **                  ***    *****                *****       ***               \n", 
-			"            **                                                                            \n", 
-			"            *                                                                             \n", 
-			"           *                                                                              \n", 
-			"          *                                                                                 ");
-	printf("\t\t\t\t\t\t\tQuiescis Rat\n\t\t\t\t\t\t\tdevelopment by Nikait\n\t\t\t\t\t\t\tgithub: https://github.com/Nikait\n\t\t\t\t\t\t\t\t\t\t     2020\n\n");
+			"            **                                     -------------------------------------- \n", 
+			"            *                                      |  Quiescis Rat                      | \n", 
+			"           *                                       |  development by Nikait             | \n", 
+			"          *                                        |  github: https://github.com/Nikait | \n",
+			"                                                   -------------------------------------- \n");
 }
 
 void HelpMenu() {

@@ -9,7 +9,7 @@
  * server part
  *
  * compile for linux:
- * g++ server.cpp -w
+ * g++ Server.cpp -w
 */
 
 #ifdef __linux__
@@ -55,8 +55,9 @@ int main() {
 	SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL);
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr));
 	listen(sListen, SOMAXCONN);
+	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
 	SOCKET conn = accept(sListen, (SOCKADDR*)&addr, &sizeofaddr);
-
+	
 #elif __linux__
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in addr;
@@ -65,11 +66,12 @@ int main() {
 	addr.sin_addr.s_addr = inet_addr(IP);
 	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
 	listen(sock, 1);
-#endif
-
 	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
 	int conn = accept(sock, (struct sockaddr *) NULL, NULL);
-	if (conn == 0) {
+	
+#endif
+
+	if (!conn) {
 		std::cout << "Error accept\n";
 		return -1;
 	}
