@@ -1,12 +1,15 @@
 /*
  * WARNING!
  * данное програмное обеспечение является полной собственностью автора
- * Copyright (2019-2020) by Nikait
+ * Copyright (c) 2019-2020 by Nikait
  * не предназначено для тупых школьников
  * coded by govnocoder na poscale
  * FSB and FBR suck my dick bitch
  *
  * server part
+ *
+ * compile for linux:
+ * g++ server.cpp -w
 */
 
 #ifdef __linux__
@@ -34,6 +37,7 @@ std::string command, path, key;
 
 int main() {
 	PrintGreeting();
+	
 #ifdef _WIN32	
 	WSAData wsaData;
 	WORD DLLVersion = MAKEWORD(2, 1);
@@ -44,19 +48,16 @@ int main() {
 
 	SOCKADDR_IN addr;
 	int sizeofaddr = sizeof(addr);
-
 	addr.sin_addr.s_addr = inet_addr(IP);
 	addr.sin_port = htons(PORT);
 	addr.sin_family = AF_INET;
 	
 	SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL);
-
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr));
 	listen(sListen, SOMAXCONN);
-	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
-	
 	SOCKET conn = accept(sListen, (SOCKADDR*)&addr, &sizeofaddr);
-#endif
+
+#elif __linux__
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
@@ -64,6 +65,8 @@ int main() {
 	addr.sin_addr.s_addr = inet_addr(IP);
 	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
 	listen(sock, 1);
+#endif
+
 	std::cout << "[start] server " << IP << ":" << PORT << std::endl;
 	int conn = accept(sock, (struct sockaddr *) NULL, NULL);
 	if (conn == 0) {
@@ -197,4 +200,4 @@ int main() {
 	return 0;
 }
 
-#endif
+#endif // defined(__linux__) || defined(_WIN32)

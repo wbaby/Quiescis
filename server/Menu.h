@@ -5,7 +5,7 @@
 
 #ifndef MENU_H
 #define MENU_H
-#include "Menu.cpp"
+#include "Menu.c"
 
 void HelpMenu();
 void PrintGreeting();
