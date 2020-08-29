@@ -192,9 +192,9 @@ int main() {
 				return 1;
 			}
 
-			else if (command == "help") {
+			else if (command == "help")
 				HelpMenu();
-			}
+
 
 			else std::cout << "command not found\n";
 		}
