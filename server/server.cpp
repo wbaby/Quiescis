@@ -1,7 +1,7 @@
 /*
  * WARNING!
  * данное програмное обеспечение является полной собственностью автора
- * Copyright (c) 2019-2020 by Nikait
+ * Copyright (c) Nikait 2020
  * не предназначено для тупых школьников
  * coded by govnocoder na poscale
  * FSB and FBR suck my dick bitch
@@ -9,7 +9,7 @@
  * server part
  *
  * compile for linux:
- * g++ Server.cpp -w
+ * g++ server.cpp -w
 */
 
 
@@ -209,9 +209,9 @@ int main() {
 				return 1;
 			}
 
-			else if (command == "help") {
+			else if (command == "help")
 				HelpMenu();
-			}
+
 
 			else std::cout << "command not found\n";
 		}

@@ -1,3 +1,8 @@
+/* 
+* Autorun - all components are collected
+* for placing software hidden in autorun
+*/
+
 #ifndef AUTORUN_H
 #define AUTORUN_H
 
