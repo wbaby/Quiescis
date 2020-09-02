@@ -5,8 +5,8 @@
 
 #ifndef MENU_H
 #define MENU_H
-#include "Menu.c"
 
+void timenow();
 void HelpMenu();
 void PrintGreeting();
 
