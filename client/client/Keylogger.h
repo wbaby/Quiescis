@@ -10,4 +10,4 @@
 
 int keylogger(std::string keylog_path);
 
-#endif
+#endif // KEYLOGGER_H

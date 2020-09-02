@@ -3,9 +3,9 @@
  * Socket definition
 */
 
-#ifndef SERVER_H
-#define SERVER_H
+#ifndef SOCKET_H
+#define SOCKET_H
 
 SOCKADDR_IN Server();
 
-#endif SERVER_H
+#endif // SOCKET_H

