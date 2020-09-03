@@ -1,9 +1,9 @@
 /*
  * WARNING!
- * данное програмное обеспечение является полной собственностью автора
+ * This software is the full property of the author
  * Copyright (c) 2019-2020 by Nikait
- * не предназначено для тупых школьников
- * coded by govnocoder na poscale
+ * Not intended for dumb kids
+
  * FSB and FBR suck my dick bitch
  *
  * server part
