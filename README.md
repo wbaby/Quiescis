@@ -15,10 +15,10 @@
    
    
 ### <b>Linux distributions</b>:<br/>
-   3.1 cd server/server<br/>
-   3.2 set Config.h, change PORT<br/>
-   3.3 g++ server.cpp -w<br/>
-   3.4 ./a.out<br/>
+   - cd server/server<br/>
+   - set Config.h, change PORT<br/>
+   - g++ server.cpp -w<br/>
+   - ./a.out<br/>
    
 ### <b>Windows</b>:<br/>
    3.5 cd server<br/>
