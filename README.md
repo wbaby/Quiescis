@@ -33,6 +33,8 @@
     - Change IP and PORT in Config.h
     - Compile Ctrl + F5
 
+# Features
+
 #  Donate
 
     monero: 
