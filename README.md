@@ -34,6 +34,10 @@
     - Compile Ctrl + F5
 
 # Features
+- ⚙️ Autorun
+- 📋 Information of system
+- 🔭 Browse directories, delete files / folders
+
 
 #  Donate
 
