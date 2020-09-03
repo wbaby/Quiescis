@@ -10,12 +10,12 @@
 2. Get a static ip or purchase VDS
 3. Server Questions cross platform
    you can run it on linux distributions
-   and windows.
+   and windows.<br/>
 
    
    
-   Linux distributions:
+   Linux distributions:<br/>
    3.1 cd server/server<br/>
-   3.2 set Config.h, change PORT
-   3.3 g++ server.cpp -w
+   3.2 set Config.h, change PORT<br/>
+   3.3 g++ server.cpp -w<br/>
    
