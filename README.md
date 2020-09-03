@@ -23,10 +23,11 @@
 ### <b>Windows</b>:<br/>
    3.5 cd server<br/>
    3.6 open server.sln in Visual Studio<br/>
-   3.7 compile Cntl + F5<br/>
-   3.8 server.exe in Debug/<br/>
+   3.7 change PORT in Config.h<br/>
+   3.8 compile Ctrl + F5<br/>
+   3.9 server.exe in Debug/<br/>
    
 ## Client
 1. Open in Visual Studio client/client.sln
 2. Change IP and PORT in Config.h
-3. Compile Cntl + F5
+3. Compile Ctrl + F5
