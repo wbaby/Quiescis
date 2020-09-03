@@ -37,7 +37,12 @@
 - ⚙️ Autorun
 - 📋 Information of system
 - 🔭 Browse directories, delete files / folders
-
+- ✔️ View all processes
+- Ability to delete a process
+- 🖋️ Real time keylogger
+- 🔒 Encrypting files and directories
+- 🔌 Shutting down the operating system
+- 😄 Throw Error MessageBox
 
 #  Donate
 
