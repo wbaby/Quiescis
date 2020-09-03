@@ -28,6 +28,7 @@
    - server.exe in Debug/<br/>
    
 ## Client
-1. Open in Visual Studio client/client.sln
-2. Change IP and PORT in Config.h
-3. Compile Ctrl + F5
+    - Open in Visual Studio client/client.sln
+
+    - Change IP and PORT in Config.h
+    - Compile Ctrl + F5
