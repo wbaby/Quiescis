@@ -1,3 +1,5 @@
 # Quiescis
 
-Questions is a powerful Remote Access Trojan for windows computer on C++
+<b>Questions</b> is a powerful Remote Access Trojan for windows computer on C++
+
+![alt text](img/header.jpg)
