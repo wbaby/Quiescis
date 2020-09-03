@@ -22,8 +22,8 @@
    
    Windows:<br/>
    3.5 cd server<br/>
-   3.6 open server.sln in Visual Studio
-   3.7 compile Cntl + F5
-   3.8 server.exe in Debug/
+   3.6 open server.sln in Visual Studio<br/>
+   3.7 compile Cntl + F5<br/>
+   3.8 server.exe in Debug/<br/>
    
    
