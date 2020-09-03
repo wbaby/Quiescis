@@ -45,7 +45,35 @@
 - 😄 Throw Error MessageBox
 
 # Commands
+|   command   |                                     description                                    |
 
+| ----------- |:-----------------------------------------------------------------------------------|
+
+|     pwd     |  find out current directory                                                        |
+
+|     ls      |  look at some directory                                                            |
+
+|     rm      |  delete a file                                                                     |
+
+|    rmdir    |  delete a directory                                                                |
+
+|    file     |  download file from victim up to 65 kb                                             |
+
+|  ifconfig   |  network information                                                               |
+
+|   upfile    |  upload file to victim up to to 65 kb                                              |
+
+|   sysinfo   |  all system information                                                            |
+
+|  keylogger  |  activate keylogger                                                                |
+
+|   crypt     |  encryption using AES. you have two options for encryption: encryption of one file |
+
+|             |  or directory, if you choose to encrypt a directory, all files in it will be       |
+
+|             |  encrypted, but internal directories will not be decrypted                         |
+
+|  shutdown   |  shutting down the 
 
 #  Donate
 
