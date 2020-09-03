@@ -44,6 +44,9 @@
 - 🔌 Shutting down the operating system
 - 😄 Throw Error MessageBox
 
+# Commands
+
+
 #  Donate
 
     monero: 
