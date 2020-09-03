@@ -15,7 +15,7 @@
    
    
    Linux distributions:
-   3.1 cd server/server
+   3.1 cd server/server<br/>
    3.2 set Config.h, change PORT
    3.3 g++ server.cpp -w
    
