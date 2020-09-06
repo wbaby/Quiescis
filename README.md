@@ -6,6 +6,7 @@
 
 # Installing
 ## Server
+***
    - Clone this repository 
    - Get a static ip or purchase VDS
    - Server Questions cross platform
