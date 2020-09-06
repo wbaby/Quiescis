@@ -46,6 +46,7 @@ int main() {
 	system("clear");
 #else
 	system("cls");
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 
 	PrintGreeting();
@@ -68,8 +69,23 @@ int main() {
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr));
 	listen(sListen, SOMAXCONN);
 
-	std::cout << "["; timenow(); std::cout << "]" << " platform: windows\n";
-	std::cout << "["; timenow(); std::cout << "]" << " [start] server " << IP << ":" << PORT << std::endl;
+	std::cout << "["; timenow(); std::cout << "]" << " platform: ";
+	SetConsoleTextAttribute(hConsole, 3);
+	std::cout << "windows\n";
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << "["; timenow(); std::cout << "]" << " [";
+	SetConsoleTextAttribute(hConsole, 4);
+	std::cout << "start";
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << "] server ";
+	SetConsoleTextAttribute(hConsole, 10);
+	std::cout << IP;
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << ":";
+	SetConsoleTextAttribute(hConsole, 12);
+	std::cout << PORT << std::endl;
+	SetConsoleTextAttribute(hConsole, 7);
+
 	std::cout << "["; timenow(); std::cout << "]" << " listening ...\n";
 	SOCKET conn = accept(sListen, (SOCKADDR*)&addr, &sizeofaddr);
 	
@@ -81,8 +97,8 @@ int main() {
 	addr.sin_addr.s_addr = inet_addr(IP);
 	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
 	listen(sock, 1);
-	std::cout << "["; timenow(); std::cout << "]" << " platform: linux\n";
-	std::cout << "["; timenow(); std::cout << "]" << " [start] server " << IP << ":" << PORT << std::endl;
+	std::cout << "["; timenow(); std::cout << "]" << " platform:" << wh_blue << " linux\n" << st_end;
+	std::cout << "["; timenow(); std::cout << "]" << " [" << red << "start" << st_end << "] server " << green << IP << st_end << ":" << red << PORT << st_end << std::endl;
 	std::cout << "["; timenow(); std::cout << "]" << " listening ...\n";
 	int conn = accept(sock, (struct sockaddr *) NULL, NULL);
 	
@@ -96,7 +112,14 @@ int main() {
 		std::cout << "["; timenow(); std::cout << "]" << " Sucessful Connected!\ntype help to print HELP [MENU]\n";
 		while (true) {
 			memset(&buffer, 0x0, sizeof(buffer));
-			std::cout << "["; timenow(); std::cout << "]" << " command => ";
+			std::cout << "["; timenow(); std::cout << "]" << " command";
+#ifndef __linux__
+			SetConsoleTextAttribute(hConsole, 13);
+			std::cout << " => ";
+			SetConsoleTextAttribute(hConsole, 7);
+#else
+			std::cout << " => ";
+#endif
 			std::getline(std::cin, command);
 
 			if (command == "ls") {
@@ -205,7 +228,14 @@ int main() {
 
 			else if (command == "close") {
 				send(conn, command.c_str(), sizeof(command), NULL);
-				std::cout << "["; timenow(); std::cout << "]" << " close connection";
+				std::cout << "["; timenow(); std::cout << "]";
+#ifndef __linux__
+				SetConsoleTextAttribute(hConsole, 12);
+				std::cout << " close connection\n";
+				SetConsoleTextAttribute(hConsole, 7);
+#else
+				std::cout << red << " close connection\n" << st_end;
+#endif
 				return 1;
 			}
 
