@@ -12,6 +12,7 @@
    - Server Questions cross platform
    you can run it on linux distributions
    and windows
+***
    
 ### <b>Linux distributions</b>:<br/>
    - cd server/server
