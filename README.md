@@ -13,7 +13,7 @@
    and windows.<br/>
    
 ### <b>Linux distributions</b>:<br/>
-   - cd server/server<br/>
+   - cd server/server
    - set Config.h, change PORT<br/>
    - g++ server.cpp -w<br/>
    - ./a.out<br/>
