@@ -6,24 +6,24 @@
 
 # Installing
 ## Server
-1. Clone this repository 
-2. Get a static ip or purchase VDS
-3. Server Questions cross platform
+   - Clone this repository 
+   - Get a static ip or purchase VDS
+   - Server Questions cross platform
    you can run it on linux distributions
-   and windows.<br/>
+   and windows
    
 ### <b>Linux distributions</b>:<br/>
    - cd server/server
-   - set Config.h, change PORT<br/>
-   - g++ server.cpp -w<br/>
-   - ./a.out<br/>
+   - set Config.h, change PORT
+   - g++ server.cpp -w
+   - ./a.out
    
 ### <b>Windows</b>:<br/>
-   - cd server<br/>
-   - open server.sln in Visual Studio<br/>
-   - change PORT in Config.h<br/>
-   - compile Ctrl + F5<br/>
-   - server.exe in Debug/<br/>
+   - cd server
+   - open server.sln in Visual Studio
+   - change PORT in Config.h
+   - compile Ctrl + F5
+   - server.exe in Debug/
    
 ## Client
     - Open in Visual Studio client/client.sln
