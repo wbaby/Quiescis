@@ -3,7 +3,7 @@
  * This software is the full property of the author
  * Copyright (c) 2019-2020 by Nikait
  * Not intended for dumb kids
-
+ *
  * FSB and FBR suck my dick bitch
  *
  * server part
