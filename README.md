@@ -1,6 +1,12 @@
-# Quiescis
+# Quiescis 1.1
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
+
+## Update 1.1
+
+     1. Сolored text
+     (supported for Linux distributions and windows)
+     2. Bug fix
 
 ![alt text](img/header.png)
 
