@@ -72,7 +72,7 @@ after:
 - 🔌 Shutting down the operating system
 - 😄 Throw Error MessageBox
 
-![alt text](img/errorr.png)
+![alt text](img/error.png)
 
 # Commands
 |   command   |                   description               |
