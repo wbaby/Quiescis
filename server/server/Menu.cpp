@@ -35,7 +35,7 @@ void PrintGreeting() {
 	SetConsoleTextAttribute(hConsole, 13);
 	std::cout << "                                   -------------------------------------- \n";
 	SetConsoleTextAttribute(hConsole, 10);
-	std::cout << "            *";
+	std::cout << "            #";
 	SetConsoleTextAttribute(hConsole, 13);
 	std::cout << "                                      |  Quiescis Rat                      | \n";
 	SetConsoleTextAttribute(hConsole, 10);
@@ -52,7 +52,7 @@ void PrintGreeting() {
 	std::cout << purpure
 		<< "                                   -------------------------------------- \n"
 		<< green
-		<< "            *" << purpure << "                                      |  Quiescis Rat                      | \n"
+		<< "            #" << purpure << "                                      |  Quiescis Rat                      | \n"
 		<< green
 		<< "           *" << purpure << "                                       |  development by Nikait             | \n"
 		<< green

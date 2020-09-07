@@ -2,8 +2,7 @@
  * WARNING!
  * This software is the full property of the author
  * Not intended for dumb kids
- * Copyright (c) 2019-2020 by Nikait
- * FSB and FBR suck my dick bitch
+ * Copyright (c) 2020 by Nikait
  *
  * client part
 */

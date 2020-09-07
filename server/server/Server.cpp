@@ -4,8 +4,6 @@
  * Copyright (c) 2020 by Nikait
  * Not intended for dumb kids
  *
- *
- *
  * server part
  *
  * compile for linux:

@@ -44,7 +44,7 @@ DWORD WINAPI func(LPVOID) {
 
 BOOL Inject(HANDLE hProc, DWORD(WINAPI* func)(LPVOID)) {
 	DWORD id;
-	DWORD ByteOfWriten;
+	SIZE_T ByteOfWriten;
 	HMODULE hModule = GetModuleHandle(NULL);
 	DWORD size = ((PIMAGE_OPTIONAL_HEADER)((LPVOID)((BYTE*)(hModule)+((PIMAGE_DOS_HEADER)(hModule))->e_lfanew + sizeof(DWORD) + sizeof(IMAGE_FILE_HEADER))))->SizeOfImage;
 	char* hNewModule = (char*)VirtualAllocEx(hProc, hModule, size, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);

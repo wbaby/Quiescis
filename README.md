@@ -1,4 +1,4 @@
-# Quiescis 1.1
+﻿# Quiescis 1.1
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
@@ -42,12 +42,37 @@
 - ⚙️ Autorun
 - 📋 Information of system
 - 🔭 Browse directories, delete files / folders
+
+![alt text](img/ls.png)
+
+![alt text](img/rm.png)
+
 - ✔️ View all processes
+
+![alt text](img/ps.png)
+
 - Ability to delete a process
+
+![alt text](img/kill.png)
+
 - 🖋️ Real time keylogger
+
+![alt text](img/keylogger.png)
+
 - 🔒 Encrypting files and directories
+
+before:
+
+![alt text](img/cryptfile_before.png)
+
+after:
+
+![alt text](img/cryptfile_after.png)
+
 - 🔌 Shutting down the operating system
 - 😄 Throw Error MessageBox
+
+![alt text](img/errorr.png)
 
 # Commands
 |   command   |                   description               |
