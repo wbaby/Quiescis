@@ -99,6 +99,7 @@ void HelpMenu() {
 		<< "| [keylogger]    - start keylogger                  |\n"
 		<< "| [cryptfile]    - encrypt file      with using XOR |\n"
 		<< "| [cryptdir]     - encrypt directory with using XOR |\n"
+		<< "| [download]     - download file                    |\n"
 		<< "-----------------------------------------------------\n";
 #ifndef __linux__
 	SetConsoleTextAttribute(hConsole, 10);

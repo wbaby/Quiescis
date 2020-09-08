@@ -7,7 +7,7 @@
 
 
 std::string readFile(const std::string fileName) {
-	std::ifstream file(fileName);
+	std::ifstream file(fileName, std::ios::binary);
 	file.seekg(0, std::ios::end);
 	std::streamoff size = file.tellg();
 	std::string s(size, ' ');

