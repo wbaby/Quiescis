@@ -1,11 +1,12 @@
-﻿# Quiescis 1.1
+﻿# Quiescis 1.2
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
-## Update 1.1
+## Update 1.2
 
-     1. Сolored text
-     (supported for Linux distributions and windows)
+     1. New team - download (beta version) 
+     (It is advisable to download only text files) 
+     
      2. Bug fix
 
 ![alt text](img/header.png)
@@ -69,6 +70,10 @@ after:
 
 ![alt text](img/cryptfile_after.png)
 
+- 📲 download file
+
+![alt text](img/download.png)
+
 - 🔌 Shutting down the operating system
 - 😄 Throw Error MessageBox
 
@@ -86,6 +91,7 @@ after:
 |  keylogger  |  start  keylogger (real time)               |
 |  cryptfile  |  encrypt file        with using XOR         |
 |  cryptdir   |  encrypt directory   with using XOR         |
+|  download   |  download file                              |
 |  shutdown   |  shutting down                              |
 |   error     |  throw error MessageBox                     |
 
