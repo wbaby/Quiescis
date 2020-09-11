@@ -4,7 +4,7 @@
 
 ## Update 1.2
 
-     1. New team - download (beta version) 
+     1. New command - download (beta version) 
      (It is advisable to download only text files <= 10 mb) 
      
      2. Bug fix
