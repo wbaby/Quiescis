@@ -4,6 +4,7 @@
 
 ## Update 1.2.1
      1. Stable encription files and directories
+     2. Bub fixes in server part for linux
 
 ![alt text](img/header.png)
 
