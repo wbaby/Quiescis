@@ -1,4 +1,5 @@
 /*
+ * Quiescis Remote Access Trojan 1.2.1
  * WARNING!
  * This software is the full property of the author
  * Copyright (c) 2020 by Nikait
