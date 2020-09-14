@@ -12,4 +12,6 @@ DWORD GetProcessID(const char* lpNameProcess);
 // Getting a list of files and directories in a directory
 std::vector<std::string> scandir(std::string p);
 
+inline bool dirExists(const std::string& dirName_in);
+
 #endif // UTILS_H

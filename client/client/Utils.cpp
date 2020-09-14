@@ -4,6 +4,16 @@
 #include <string>
 #include <fstream>
 
+bool dirExists(const std::string& dirName_in) {
+	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+	if (ftyp == INVALID_FILE_ATTRIBUTES)
+		return false;
+
+	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+		return true;
+
+	return false;
+}
 
 std::wstring string_to_wstring(std::string& s) {
 	std::ofstream ofs("temp.txt", std::ofstream::out);

