@@ -1,5 +1,11 @@
+#ifndef __linux__
+	#include <windows.h>
+#else
+	#include <dirent.h>
+#endif
+
 #include <iostream>
-#include <windows.h>
+#include <fstream>
 #include <string>
 
 void throw_error(const char* error_text) {
@@ -16,12 +22,18 @@ void throw_error(const char* error_text) {
 }
 
 bool dirExists(const std::string& dirName_in) {
+#ifdef __linux__
+	DIR* dir = opendir(dirName_in.c_str());
+	if (dir) {
+		closedir(dir);
+		return true;
+	} else return false;
+#else
 	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
 	if (ftyp == INVALID_FILE_ATTRIBUTES)
 		return false;
-
 	if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
 		return true;
-
 	return false;
+#endif
 }

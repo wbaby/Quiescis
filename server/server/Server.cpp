@@ -18,6 +18,7 @@
 	#include <stdlib.h>
 
 	#include "Menu.cpp"
+	#include "Utils.cpp"
 #else
 	#include <winsock2.h>
 	#include <windows.h>
@@ -235,7 +236,12 @@ int main() {
 				std::cout << "wait ...\n";
 				recv(conn, buffer, sizeof(buffer), NULL);
 
-				if (!dirExists("downloads")) _wmkdir(L"downloads");
+				if (!dirExists("downloads"))
+#ifndef __linux__
+				 _wmkdir(L"downloads");
+#else
+				system("mkdir downloads");
+#endif
 				if (!strcmp(buffer, "exist")) {
 					std::cout << "[";
 					timenow();
