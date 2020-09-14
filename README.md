@@ -1,26 +1,20 @@
-﻿# Quiescis 1.2
+﻿# Quiescis 1.2.1
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
-## Update 1.2
-
-     1. New command - download (beta version) 
-     (It is advisable to download only text files <= 10 mb) 
-     
-     2. Bug fix
+## Update 1.2.1
+     1. Stable encription files and directories
 
 ![alt text](img/header.png)
 
 # Installing
 ## Server
-
     - Clone this repository 
     - Get a static ip or purchase VDS
     - Server Questions cross platform
       you can run it on linux distributions
       and windows
 
-   
 ### <b>Linux distributions</b>:<br/>
    - cd server/server
    - set Config.h, change PORT
@@ -105,5 +99,3 @@ after:
 ***
     ethereum:
     0x189a9436b2fbBd0b1C3927E8a398379DBb7105AA
-
-
