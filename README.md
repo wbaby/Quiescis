@@ -2,9 +2,9 @@
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
-## Update 1.2.1
-     1. Stable encription files and directories
-     2. Bub fixes in server part for linux
+## Update 1.2.2
+     1. Stable and fster command to get system information
+
 
 ![alt text](img/header.png)
 
@@ -37,6 +37,9 @@
 # Features
 - ⚙️ Autorun
 - 📋 Information of system
+
+![alt text](img/info.png)
+
 - 🔭 Browse directories, delete files / folders
 
 ![alt text](img/ls.png)
@@ -75,20 +78,20 @@ after:
 ![alt text](img/error.png)
 
 # Commands
-|   command   |                   description               |
-| ----------- |:--------------------------------------------|
-|     pwd     |  find out current directory                 |
-|     ls      |  list files and dirs                        |
-|  rm, rmdir  |  delete file; delete directory              |
-|   sysinfo   |  system information                         |
-|     ps      |  process info                               |
-|    kill     |  kill process                               |
-|  keylogger  |  start  keylogger (real time)               |
-|  cryptfile  |  encrypt file        with using XOR         |
-|  cryptdir   |  encrypt directory   with using XOR         |
-|  download   |  download file                              |
-|  shutdown   |  shutting down                              |
-|   error     |  throw error MessageBox                     |
+|   command   |                    description                 |
+| ----------- |:-----------------------------------------------|
+|     pwd     |  find out current directory                    |
+|     ls      |  list files and dirs                           |
+|  rm, rmdir  |  delete file; delete directory                 |
+|    info     |  system information (cpu, gpu hardware id, os) |
+|     ps      |  process info                                  |
+|    kill     |  kill process                                  |
+|  keylogger  |  start  keylogger (real time)                  |
+|  cryptfile  |  encrypt file        with using XOR            |
+|  cryptdir   |  encrypt directory   with using XOR            |
+|  download   |  download file                                 |
+|  shutdown   |  shutting down                                 |
+|   error     |  throw error MessageBox                        |
 
 #  Donate
     monero: 
