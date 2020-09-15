@@ -150,8 +150,7 @@ int main() {
 				std::cout << buffer << std::endl;
 			}
 
-			else if (command == "sysinfo") {
-				std::cout << "please, wait ...\n";
+			else if (command == "info") {
 				send(conn, command.c_str(), sizeof(command), NULL);
 				recv(conn, buffer, sizeof(buffer), NULL);
 				std::cout << buffer << std::endl;

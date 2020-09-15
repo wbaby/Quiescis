@@ -33,6 +33,9 @@
     <ClCompile Include="Socket.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
+    <ClCompile Include="Info.cpp">
+      <Filter>Файлы ресурсов</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Autorun.h">
@@ -51,6 +54,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Socket.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Info.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

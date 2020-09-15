@@ -82,7 +82,7 @@ void HelpMenu() {
 		<< "| [pwd]          - path                             |\n"
 		<< "| [ls]           - list files and dirs              |\n"
 		<< "| [rm] [rmdir]   - delete file; delete directory    |\n"
-		<< "| [sysinfo]      - system information               |\n"
+		<< "| [info]         - information (os, cpu, gpu, ram)  |\n"
 		<< "-----------------------------------------------------\n";
 #ifndef __linux__
 	SetConsoleTextAttribute(hConsole, 10);
