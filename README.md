@@ -3,7 +3,7 @@
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
 ## Update 1.2.2
-     1. Stable and fster command to get system information
+     1. Stable and fast command to get system information
 
 
 ![alt text](img/header.png)
