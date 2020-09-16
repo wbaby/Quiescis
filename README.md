@@ -1,10 +1,11 @@
-﻿# Quiescis 1.2.2
+﻿# Quiescis 1.2.3
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
-## Update 1.2.2
+## Update 1.2.3
      1. Stable and fast command to get system information
-
+     2. Stable commands [rm], [rmdir]
+     3. Bug fix in client/Crypt.cpp, client/Main.cpp
 
 ![alt text](img/header.png)
 
