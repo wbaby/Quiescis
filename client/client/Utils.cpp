@@ -4,6 +4,15 @@
 #include <string>
 #include <fstream>
 
+void TreatmentPath(std::string& path) {
+	std::string n_path;
+	for (unsigned int item = 0; item < path.length(); ++item) {
+		if (path[item] == '/') n_path += "\\";
+		else n_path += path[item];
+	}
+	path = n_path;
+}
+
 bool dirExists(const std::string& dirName_in) {
 	DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
 	if (ftyp == INVALID_FILE_ATTRIBUTES)
@@ -13,6 +22,13 @@ bool dirExists(const std::string& dirName_in) {
 		return true;
 
 	return false;
+}
+
+
+bool FilExist(const std::string& name) {
+	std::ifstream file(name);
+	if (!file) return false;
+	return true;
 }
 
 std::wstring string_to_wstring(std::string& s) {

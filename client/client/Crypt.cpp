@@ -5,7 +5,6 @@
 
 #include "Utils.h"
 
-
 std::string readFile(const std::string fileName) {
 	std::ifstream file(fileName, std::ios::binary);
 	file.seekg(0, std::ios::end);
@@ -18,10 +17,7 @@ std::string readFile(const std::string fileName) {
 
 std::string CryptFile(std::string path, int key) {
 	std::string n_path;
-	for (unsigned int item = 0; item < path.length(); ++item) {
-		if (path[item] == '/') n_path += "\\";
-		else n_path += path[item];
-	}
+	TreatmentPath(n_path);
 
 	if (n_path[n_path.size() - 1] == '\\') n_path.pop_back();
 
@@ -44,22 +40,19 @@ std::string CryptFile(std::string path, int key) {
 }
 
 std::string CryptDir(std::string path, int key) {
-	std::string buf, n_path;
+	std::string buf;
 	std::vector<std::string> v;
 
-	for (unsigned int item = 0; item < path.length(); ++item) {
-		if (path[item] == '/') n_path += "\\";
-		else n_path += path[item];
-	}
+	TreatmentPath(path);
 
-	if (n_path[n_path.size()-1] != '\\') n_path += "\\";
+	if (path[path.size()-1] != '\\') path += "\\";
 
-	v = scandir(n_path + "*");
+	v = scandir(path + "*");
 	if (v.size() < 1) return "Directory exist\n";
 
 	for (unsigned int i = 0; i < v.size(); i++)
-		if (dirExists(n_path + v[i])) CryptDir(n_path + v[i], key);
-		else buf += CryptFile(n_path + v[i], key);
+		if (dirExists(path + v[i])) CryptDir(path + v[i], key);
+		else buf += CryptFile(path + v[i], key);
 
 	return buf;
 }
