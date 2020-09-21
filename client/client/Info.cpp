@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <fstream>
 #include <intrin.h>
 #include <string>
 #include <comdef.h>
@@ -287,11 +288,42 @@ std::string Hwid() {
 	return ret;
 }
 
+std::string readfile(const std::string fileName) {
+	std::ifstream file(fileName, std::ios::binary);
+	file.seekg(0, std::ios::end);
+	std::streamoff size = file.tellg();
+	std::string s(size, ' ');
+	file.seekg(0);
+	file.read(&s[0], size);
+	return s;
+}
+
+std::string Chrome() {
+	// get version of Chrome
+	std::wstring version_path_cmd = L"copy \"";
+	version_path_cmd += _wgetenv(L"LOCALAPPDATA");
+	version_path_cmd += L"\\Google\\Chrome\\User Data\\Last Version\" \"Last Version\"";
+	_wsystem(version_path_cmd.c_str());
+	try {
+		std::string version_file_data = readfile("Last Version");
+		system("del \"Last Version\"");
+		if (version_file_data.length() > 1)
+			return version_file_data;
+		else return "none";
+	}
+	catch (...) {
+		return "none";
+	}
+}
+
 std::string GetAllInfo() {
-	std::string result = "Cpu:  " + Cpu();
-	result += "\nGpu:  " + Gpu();
-	result += "\nRAM:  " + RAM() + " Gb";
-	result += "\nos:   " + OS();
-	result += "\nhwid: " + Hwid();
+	std::string result = "Cpu:    " + Cpu();
+	result += "\nGpu:    " + Gpu();
+	result += "\nRAM:    " + RAM() + " Gb";
+	result += "\nos:     " + OS();
+	result += "\nhwid:   " + Hwid();
+	if (Chrome() != "none") 
+		result += "\nChrome: v" + Chrome();
+	
 	return result;
 }

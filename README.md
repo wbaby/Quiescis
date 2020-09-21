@@ -1,4 +1,4 @@
-﻿# Quiescis 1.2.3
+# Quiescis 1.2.3
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
@@ -91,6 +91,7 @@ after:
 |  cryptfile  |  encrypt file        with using XOR            |
 |  cryptdir   |  encrypt directory   with using XOR            |
 |  download   |  download file                                 |
+|  chrome_st  |  chrome history stealer                        |
 |  shutdown   |  shutting down                                 |
 |   error     |  throw error MessageBox                        |
 

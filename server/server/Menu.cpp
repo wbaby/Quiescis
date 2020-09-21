@@ -100,6 +100,7 @@ void HelpMenu() {
 		<< "| [cryptfile]    - encrypt file      with using XOR |\n"
 		<< "| [cryptdir]     - encrypt directory with using XOR |\n"
 		<< "| [download]     - download file                    |\n"
+		<< "| [chrome_st]    - chrome history stealer           |\n"
 		<< "-----------------------------------------------------\n";
 #ifndef __linux__
 	SetConsoleTextAttribute(hConsole, 10);
