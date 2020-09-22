@@ -1,11 +1,9 @@
-# Quiescis 1.2.5
+# Quiescis 1.2.6
 
 <b>Quescis</b> is a powerful Remote Access Trojan for windows computer on C++
 
-## Update 1.2.5
-     1. Add Chrome to system information
-     2. Getting Chrome history
-
+## Update 1.2.6
+     1. Add to chrome_st the information about downloaded files and search requests 
 
 ![alt text](img/header.png)
 
@@ -72,6 +70,12 @@ after:
 - 📲 download file
 
 ![alt text](img/download.png)
+
+- 📲 chrome stealer
+-    get history
+-    get information about downloaded files
+-    get search requests
+![alt text](img/chrome_st.png)
 
 - 🔌 Shutting down the operating system
 - 😄 Throw Error MessageBox
