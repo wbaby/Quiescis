@@ -39,7 +39,7 @@
     <ClCompile Include="Chrome.cpp">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite3.cpp">
+    <ClCompile Include="sqlite3.c">
       <Filter>Файлы ресурсов</Filter>
     </ClCompile>
   </ItemGroup>

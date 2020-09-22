@@ -4,8 +4,11 @@
 # define SQLITE_PRIVATE static
 #endif
 
+
 #ifndef SQLITEINT_H
 #define SQLITEINT_H
+
+
 
 
 #ifndef SQLITE_TCLAPI
@@ -16,6 +19,9 @@
 #if defined(_MSC_VER) && _MSC_VER>=1400
 #  define _CRT_RAND_S
 #endif
+
+
+
 
 
 #ifndef SQLITE_MSVC_H
@@ -42,6 +48,12 @@
 #endif 
 
 
+
+
+
+
+
+
 #if defined(__RTP__) || defined(_WRS_KERNEL)
 
 #include <vxWorks.h>
@@ -59,6 +71,9 @@
 #define HAVE_READLINK 1
 #define HAVE_LSTAT 1
 #endif 
+
+
+
 
 
 #ifndef SQLITE_DISABLE_LFS
@@ -101,6 +116,9 @@
 #endif
 
 
+
+
+
 #ifndef SQLITE3_H
 #define SQLITE3_H
 #include <stdarg.h>     
@@ -134,7 +152,7 @@ extern "C" {
 # define SQLITE_SYSAPI
 #endif
 
-
+	
 #define SQLITE_DEPRECATED
 #define SQLITE_EXPERIMENTAL
 
@@ -146,26 +164,27 @@ extern "C" {
 # undef SQLITE_VERSION_NUMBER
 #endif
 
-
+	
 #define SQLITE_VERSION        "3.15.2"
 #define SQLITE_VERSION_NUMBER 3015002
 #define SQLITE_SOURCE_ID      "2016-11-28 19:13:37 bbd85d235f7037c6a033a9690534391ffeacecc8"
 
-
+	
 	SQLITE_API const char sqlite3_version[] = SQLITE_VERSION;
 	SQLITE_API const char *sqlite3_libversion(void);
 	SQLITE_API const char *sqlite3_sourceid(void);
 	SQLITE_API int sqlite3_libversion_number(void);
 
-
+	
 #ifndef SQLITE_OMIT_COMPILEOPTION_DIAGS
 	SQLITE_API int sqlite3_compileoption_used(const char *zOptName);
 	SQLITE_API const char *sqlite3_compileoption_get(int N);
 #endif
 
+	
 	SQLITE_API int sqlite3_threadsafe(void);
 
-
+	
 	typedef struct sqlite3 sqlite3;
 
 	
@@ -187,11 +206,14 @@ extern "C" {
 # define double sqlite3_int64
 #endif
 
+	
 	SQLITE_API int sqlite3_close(sqlite3*);
 	SQLITE_API int sqlite3_close_v2(sqlite3*);
 
+	
 	typedef int(*sqlite3_callback)(void*, int, char**, char**);
 
+	
 	SQLITE_API int sqlite3_exec(
 		sqlite3*,                                  
 		const char *sql,                           
@@ -200,7 +222,7 @@ extern "C" {
 		char **errmsg                              
 	);
 
-
+	
 #define SQLITE_OK           0   
 	
 #define SQLITE_ERROR        1   
@@ -233,7 +255,9 @@ extern "C" {
 #define SQLITE_WARNING     28   
 #define SQLITE_ROW         100  
 #define SQLITE_DONE        101  
+	
 
+	
 #define SQLITE_IOERR_READ              (SQLITE_IOERR | (1<<8))
 #define SQLITE_IOERR_SHORT_READ        (SQLITE_IOERR | (2<<8))
 #define SQLITE_IOERR_WRITE             (SQLITE_IOERR | (3<<8))
@@ -291,7 +315,7 @@ extern "C" {
 #define SQLITE_AUTH_USER               (SQLITE_AUTH | (1<<8))
 #define SQLITE_OK_LOAD_PERMANENTLY     (SQLITE_OK | (1<<8))
 
-
+	
 #define SQLITE_OPEN_READONLY         0x00000001  
 #define SQLITE_OPEN_READWRITE        0x00000002  
 #define SQLITE_OPEN_CREATE           0x00000004  
@@ -313,7 +337,9 @@ extern "C" {
 #define SQLITE_OPEN_PRIVATECACHE     0x00040000  
 #define SQLITE_OPEN_WAL              0x00080000  
 
+	
 
+	
 #define SQLITE_IOCAP_ATOMIC                 0x00000001
 #define SQLITE_IOCAP_ATOMIC512              0x00000002
 #define SQLITE_IOCAP_ATOMIC1K               0x00000004
@@ -336,18 +362,18 @@ extern "C" {
 #define SQLITE_LOCK_PENDING       3
 #define SQLITE_LOCK_EXCLUSIVE     4
 
-
+	
 #define SQLITE_SYNC_NORMAL        0x00002
 #define SQLITE_SYNC_FULL          0x00003
 #define SQLITE_SYNC_DATAONLY      0x00010
 
-
+	
 	typedef struct sqlite3_file sqlite3_file;
 	struct sqlite3_file {
 		const struct sqlite3_io_methods *pMethods;  
 	};
 
-
+	
 	typedef struct sqlite3_io_methods sqlite3_io_methods;
 	struct sqlite3_io_methods {
 		int iVersion;
@@ -375,6 +401,7 @@ extern "C" {
 		
 	};
 
+	
 #define SQLITE_FCNTL_LOCKSTATE               1
 #define SQLITE_FCNTL_GET_LOCKPROXYFILE       2
 #define SQLITE_FCNTL_SET_LOCKPROXYFILE       3
@@ -550,7 +577,7 @@ extern "C" {
 	
 	SQLITE_API int sqlite3_busy_timeout(sqlite3*, int ms);
 
-
+	
 	SQLITE_API int sqlite3_get_table(
 		sqlite3 *db,          
 		const char *zSql,     
@@ -561,6 +588,7 @@ extern "C" {
 	);
 	SQLITE_API void sqlite3_free_table(char **result);
 
+	
 	SQLITE_API char *sqlite3_mprintf(const char*, ...);
 	SQLITE_API char *sqlite3_vmprintf(const char*, va_list);
 	SQLITE_API char *sqlite3_snprintf(int, char*, const char*, ...);
